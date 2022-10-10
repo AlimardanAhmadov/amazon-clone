@@ -5,9 +5,17 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { Link } from "react-router-dom";
 import { useStateValue } from "../StateProvider";
+import { auth } from "../firebaseConfig";
+
 
 function Navigation() {
-  const [{ basket }, dispatch] = useStateValue();
+  const [{ basket, user }, dispatch] = useStateValue();
+
+  const handleAuthentication = () => {
+    if (user) {
+      auth.signOut();
+    }
+  }
 
   return (
     <header className={classes.header}>
@@ -25,10 +33,12 @@ function Navigation() {
       </div>
 
       <div className={classes.header__navLinks}>
-        <div className={classes.header__link}>
-          <span className={classes.header__optionLineOne}>Hello Guest</span>
-          <span className={classes.header__optionLineTwo}>Sign in</span>
-        </div>
+        <Link to={!user && "/login"}>
+          <div onClick={handleAuthentication} className={classes.header__link}>
+            <span className={classes.header__optionLineOne}>Hello Guest</span>
+            <span className={classes.header__optionLineTwo}>{ user ? 'Sign Out' : 'Sign In'}</span>
+          </div>
+        </Link>
 
         <div className={classes.header__link}>
           <span className={classes.header__optionLineOne}>Returns</span>
@@ -43,7 +53,9 @@ function Navigation() {
         <Link to="/checkout">
           <div className={classes.header__optionCart}>
             <ShoppingBasketIcon />
-            <span className="header__optionLineTwo header__cartCount">{basket?.length}</span>
+            <span className="header__optionLineTwo header__cartCount">
+              {basket?.length}
+            </span>
           </div>
         </Link>
       </div>

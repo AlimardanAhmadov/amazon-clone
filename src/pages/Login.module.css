@@ -1,0 +1,80 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-color: #fff;
+}
+
+.loginLogo {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    object-fit: contain;
+    width: 100px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.loginContainer {
+    width: 300px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    border: 1px solid rgb(202, 202, 202);
+    padding: 20px;
+}
+
+.loginContainer > h1 {
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.inputGroup label {
+    font-weight: 600;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.loginForm > .inputGroup > input {
+    height: 30px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid rgb(175, 175, 175);
+    padding-left: 10px;
+}
+
+.loginContainer > p {
+    margin-top: 15px;
+    font-size: 12px;
+}
+
+.loginBtn {
+    background: #f0c14b;
+    border: 1px solid;
+    margin-top: 10px;
+    border-color: #a88734 #9c7e31 #846a29;
+    border-radius: 2px;
+    width: 100%;
+    height: 30px;
+}
+
+.login__registerButton {
+    border-radius: 2px;
+    width: 100%;
+    height: 30px;
+    border: 1px solid;
+    margin-top: 10px;
+    border-color: rgb(151, 151, 151);
+}
