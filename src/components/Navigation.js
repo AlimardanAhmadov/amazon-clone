@@ -35,7 +35,7 @@ function Navigation() {
       <div className={classes.header__navLinks}>
         <Link to={!user && "/login"}>
           <div onClick={handleAuthentication} className={classes.header__link}>
-            <span className={classes.header__optionLineOne}>Hello Guest</span>
+            <span className={classes.header__optionLineOne}>Hello {!user ? 'Guest' : user.email}</span>
             <span className={classes.header__optionLineTwo}>{ user ? 'Sign Out' : 'Sign In'}</span>
           </div>
         </Link>
