@@ -3,12 +3,13 @@ import { useStateValue } from "../StateProvider";
 import { Link } from "react-router-dom";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { getBasketTotal } from "../reducer";
+import { useNavigate } from "react-router-dom";
+import { db } from "../firebaseConfig";
 
 import classes from "./Payment.module.css";
 import CurrencyFormat from "react-currency-format";
 import CheckoutProduct from "../components/CheckoutProduct";
 import axios from "../axios";
-import { useNavigate } from "react-router-dom";
 
 export default function Payment() {
   const navigate = useNavigate();
@@ -27,38 +28,48 @@ export default function Payment() {
 
   useEffect(() => {
     const getClientSecret = async () => {
-      
       const response = await axios({
-        method: 'post',
-        url: `/payments/create?total=${getBasketTotal(basket) * 100}`
+        method: "post",
+        url: `/payments/create?total=${getBasketTotal(basket) * 100}`,
       });
       setClientSecret(response.data.clientSecret);
-    }
+    };
 
     getClientSecret();
-  }, [basket])
+  }, [basket]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setProcessing(true);
 
-    const payload = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement)
-      }
-    }).then(({ paymentIntent }) => {
-      
-      setSucceeded(true);
-      setError(null);
-      setProcessing(false);
-
-      dispatch({
-        type: 'EMPTY_CART'
+    const payload = await stripe
+      .confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
       })
-      
-      navigate("/orders", { replace: true });
-    })
+      .then(({ paymentIntent }) => {
+        db
+          .collection("users")
+          .doc(user?.uid)
+          .collection('orders')
+          .doc(paymentIntent.id)
+          .set({
+            basket: basket,
+            amount: paymentIntent.amount,
+            created: paymentIntent.created
+          })
 
+        setSucceeded(true);
+        setError(null);
+        setProcessing(false);
+
+        dispatch({
+          type: "EMPTY_CART",
+        });
+
+        navigate("/orders", { replace: true });
+      });
   };
 
   const handleChange = (event) => {
@@ -108,9 +119,7 @@ export default function Payment() {
                 <CurrencyFormat
                   renderText={(value) => (
                     <>
-                      <h3>
-                        Order Total:{value}
-                      </h3>
+                      <h3>Order Total:{value}</h3>
                     </>
                   )}
                   decimalScale={2}

@@ -40,10 +40,12 @@ function Navigation() {
           </div>
         </Link>
 
-        <div className={classes.header__link}>
-          <span className={classes.header__optionLineOne}>Returns</span>
-          <span className={classes.header__optionLineTwo}>& Orders</span>
-        </div>
+        <Link to='/orders'>
+          <div className={classes.header__link}>
+            <span className={classes.header__optionLineOne}>Returns</span>
+            <span className={classes.header__optionLineTwo}>& Orders</span>
+          </div>
+        </Link>
 
         <div className={classes.header__link}>
           <span className={classes.header__optionLineOne}>Your</span>

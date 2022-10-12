@@ -35,7 +35,7 @@ function CheckoutProduct(props) {
               <StarIcon className="star__icon" />
             ))}
         </div>
-        <button onClick={removeFromCart}>Remove from Cart</button>
+        {!props.hideButton && (<button onClick={removeFromCart}>Remove from Cart</button>)}
       </div>
     </div>
   );
